@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="system_accent1_500">#FF6A00</color>
+    <color name="system_accent1_100">#FFE0CC</color>
+    <color name="system_accent1_200">#FFB380</color>
+    <color name="system_accent1_700">#CC5500</color>
+</resources>
+

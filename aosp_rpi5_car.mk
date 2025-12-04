@@ -17,6 +17,17 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
 $(call enforce-product-packages-exist,Bluetooth Keyguard Launcher2 OverviewApp RotaryIME RotaryPlayground com.android.ranging libnfc_ndef libvariablespeed pppd)
 
+
+# adb
+PRODUCT_PROPERTY_OVERRIDES += \
+    service.adb.tcp.port=5555 \
+    persist.sys.usb.config=adb \
+    ro.adb.secure=0
+
+PRODUCT_COPY_FILES += \
+    device/brcm/rpi5/init.enable-adb-tcp.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.enable-adb-tcp.rc
+
+
 # android.car
 PRODUCT_PACKAGES += \
     liblargeparcelablejni

@@ -1,0 +1,9 @@
+android_app {
+    name: "OverlayOrange",
+    certificate: "platform",
+    privileged: true,
+    sdk_version: "current",
+    resource_dirs: ["res"],
+    manifest: "AndroidManifest.xml",
+}
+

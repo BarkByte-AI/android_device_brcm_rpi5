@@ -1,0 +1,5 @@
+on post-fs-data
+    # Force ADB to listen on TCP for car builds
+    setprop service.adb.tcp.port 5555
+    setprop persist.sys.usb.config adb
+    start adbd
