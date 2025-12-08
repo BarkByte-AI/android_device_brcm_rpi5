@@ -26,7 +26,8 @@ for PARTITION in "boot" "system" "vendor"; do
 done
 
 VERSION=RaspberryVanillaAOSP16
-DATE=$(date +%Y%m%d)
+# Include time to avoid clobbering prior images from the same day.
+DATE=$(date +%Y%m%d-%H%M%S)
 TARGET=$(echo ${TARGET_PRODUCT} | sed 's/^aosp_//')
 IMGNAME=${VERSION}-${DATE}-${TARGET}.img
 IMGSIZE=15360000000

@@ -17,6 +17,9 @@ OVERRIDE_PRODUCT_COMPRESSED_APEX := false
 # API level
 PRODUCT_SHIPPING_API_LEVEL := 36
 
+# OEM Unlock / Development
+PRODUCT_VENDOR_PROPERTIES += ro.oem_unlock_supported=1
+
 # Audio
 PRODUCT_PACKAGES += \
     com.android.hardware.audio.rpi5
