@@ -17,6 +17,12 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
 $(call enforce-product-packages-exist,Bluetooth Keyguard Launcher2 OverviewApp RotaryIME RotaryPlayground com.android.ranging display_compat_config libnfc_ndef libvariablespeed pppd)
 
+# adb
+PRODUCT_VENDOR_PROPERTIES += \
+    service.adb.tcp.port=5555 \
+    persist.sys.usb.config=adb \
+    ro.adb.secure=0
+
 # android.car
 PRODUCT_PACKAGES += \
     liblargeparcelablejni
