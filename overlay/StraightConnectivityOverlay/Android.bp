@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+
+// The car's 4G link: the modem's usb0 as a cellular network under Wi-Fi. A vendor module because the target's
+// overlayable (ServiceConnectivityResourcesConfig) only accepts overlays from the product, system or vendor partition.
+runtime_resource_overlay {
+    name: "StraightConnectivityOverlay",
+    resource_dirs: ["res"],
+    sdk_version: "current",
+    vendor: true,
+}

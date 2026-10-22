@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The car's 4G link: usb0 as a cellular network under Wi-Fi (straight-talk, docs/2026-10-19-car-4g-link.md, task 4).
+     Static, so it is always on; the target's overlayable policy only takes overlays from a partition. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.aaos.connectivity.resources">
+    <overlay android:targetPackage="com.android.connectivity.resources"
+        android:targetName="ServiceConnectivityResourcesConfig"
+        android:isStatic="true" android:priority="10" />
+    <application android:hasCode="false" />
+</manifest>

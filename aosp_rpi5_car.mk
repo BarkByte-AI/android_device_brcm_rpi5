@@ -103,6 +103,7 @@ PRODUCT_PACKAGES += \
     BluetoothRpiOverlay \
     CarServiceRpiOverlay \
     SettingsProviderRpiOverlay \
+    StraightConnectivityOverlay \
     WifiRpiOverlay
 
 # Permissions

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- <iface>;<capabilities>;<ip config>;<transport>. Transport 0 is cellular, so NetworkRanker puts usb0 below
+         Wi-Fi, and the mobile-data always-on request keeps it up underneath. An explicit capability list starts
+         empty: 12 INTERNET, 13 NOT_RESTRICTED, 14 TRUSTED, 15 NOT_VPN, 28 NOT_VCN_MANAGED and
+         37 NOT_BANDWIDTH_CONSTRAINED are what the default request needs. No 11 NOT_METERED, so apps treat it as
+         metered. EthernetTracker adds NOT_ROAMING, NOT_CONGESTED and NOT_SUSPENDED itself. -->
+    <string-array name="config_ethernet_interfaces" translatable="false">
+        <item>usb0;12,13,14,15,28,37;;0</item>
+    </string-array>
+</resources>
