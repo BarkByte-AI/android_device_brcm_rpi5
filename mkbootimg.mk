@@ -8,11 +8,13 @@ DEVICE_PATH := device/brcm/rpi5
 KERNEL_PATH := device/brcm/rpi5-kernel
 
 RPI_BOOT_OUT := $(PRODUCT_OUT)/rpiboot
-$(RPI_BOOT_OUT): $(INSTALLED_RAMDISK_TARGET)
+# The kernel is the one the product installed as $(PRODUCT_OUT)/kernel (device.mk copies the stock prebuilt there; a
+# product may copy its own first), so a product can carry another kernel without touching this file.
+$(RPI_BOOT_OUT): $(INSTALLED_RAMDISK_TARGET) $(PRODUCT_OUT)/kernel
 	mkdir -p $(RPI_BOOT_OUT)
 	mkdir -p $(RPI_BOOT_OUT)/overlays
 	cp $(DEVICE_PATH)/boot/* $(RPI_BOOT_OUT)
-	cp $(KERNEL_PATH)/Image $(RPI_BOOT_OUT)
+	cp $(PRODUCT_OUT)/kernel $(RPI_BOOT_OUT)/Image
 	cp $(KERNEL_PATH)/bcm2712*-rpi-*.dtb $(RPI_BOOT_OUT)
 	cp $(KERNEL_PATH)/overlays/* $(RPI_BOOT_OUT)/overlays
 	cp $(PRODUCT_OUT)/ramdisk.img $(RPI_BOOT_OUT)
