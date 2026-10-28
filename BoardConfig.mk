@@ -61,6 +61,9 @@ BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 # Treble
 TARGET_COPY_OUT_VENDOR := vendor
 
+# Vendor AIDs (config.fs: vendor_modem, the group of the SIM7600 serial ports)
+TARGET_FS_CONFIG_GEN += device/brcm/rpi5/config.fs
+
 # Wifi
 BOARD_WLAN_DEVICE := bcmdhd
 BOARD_HOSTAPD_DRIVER := NL80211

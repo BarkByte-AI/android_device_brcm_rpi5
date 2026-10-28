@@ -19,3 +19,8 @@
 
 # USB
 /sys/class/udc/1000480000.usb  current_speed                                 0664   system     system
+
+# Modem (SIM7600 USB serial ports: the car client reads NMEA and AT through vendor_modem). The glob takes every
+# USB serial port, so a second ttyUSB device (an ELM327 for OBD-II, whose notes ask for a rule on the same glob)
+# needs its own name or the same group first: ueventd takes the last matching rule.
+/dev/ttyUSB*                                                                 0660   root       vendor_modem
