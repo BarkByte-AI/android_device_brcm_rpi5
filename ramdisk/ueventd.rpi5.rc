@@ -24,3 +24,6 @@
 # USB serial port, so a second ttyUSB device (an ELM327 for OBD-II, whose notes ask for a rule on the same glob)
 # needs its own name or the same group first: ueventd takes the last matching rule.
 /dev/ttyUSB*                                                                 0660   root       vendor_modem
+
+# AI HAT+ 2 (the Hailo-10H, hailo1x_pci: the car client's detector opens it through vendor_npu)
+/dev/h1x-*                                                                   0660   root       vendor_npu

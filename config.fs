@@ -8,3 +8,10 @@
 
 [AID_VENDOR_MODEM]
 value: 2900
+
+# vendor_npu owns the AI HAT+ 2's Hailo-10H (/dev/h1x-*): ueventd.rpi5.rc gives the device to this group, and the car
+# client runs in it through its NPU permission, which names the group by number, 2901, in carclient-npu.xml in the
+# straight-talk repository (aaos/carclient/), so the value below must stay equal to it.
+
+[AID_VENDOR_NPU]
+value: 2901
