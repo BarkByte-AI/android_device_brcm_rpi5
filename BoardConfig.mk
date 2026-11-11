@@ -26,6 +26,11 @@ TARGET_SCREEN_DENSITY := 240
 BOARD_CUSTOM_BOOTIMG := true
 BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_PATH)/mkbootimg.mk
 BOARD_KERNEL_CMDLINE := console=ttyAMA10,115200 no_console_suspend root=/dev/ram0 rootwait androidboot.hardware=rpi5
+# Straight Pipes' Waveshare touchscreens are mounted upside down, cables to the passenger's side: the HDMI connector gets
+# that panel orientation, which drm_hwcomposer reports to SurfaceFlinger as the display's physical orientation (the
+# ro.surface_flinger.primary_display_orientation property is not read while the composer reports one). Touch is turned
+# to match by idc/Vendor_222a_Product_0001.idc; change both together.
+BOARD_KERNEL_CMDLINE += video=HDMI-A-1:panel_orientation=upside_down
 
 # Manifest
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(DEVICE_PATH)/framework_compatibility_matrix.xml

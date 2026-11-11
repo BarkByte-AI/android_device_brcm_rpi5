@@ -167,7 +167,8 @@ PRODUCT_PACKAGES += \
 
 # Touchscreen
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml
+    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
+    $(DEVICE_PATH)/idc/Vendor_222a_Product_0001.idc:$(TARGET_COPY_OUT_VENDOR)/usr/idc/Vendor_222a_Product_0001.idc
 
 # USB
 PRODUCT_PACKAGES += \
