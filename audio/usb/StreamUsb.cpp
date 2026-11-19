@@ -33,7 +33,7 @@ using aidl::android::media::audio::common::MicrophoneInfo;
 namespace aidl::android::hardware::audio::core {
 
 StreamUsb::StreamUsb(StreamContext* context, const Metadata& metadata)
-    : StreamAlsa(context, metadata, 1 /*readWriteRetries*/) {}
+    : StreamAlsa(context, metadata, 1 /*readWriteRetries*/, true /*waitForOutputDevice*/) {}
 
 ndk::ScopedAStatus StreamUsb::setConnectedDevices(
         const std::vector<AudioDevice>& connectedDevices) {

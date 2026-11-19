@@ -31,14 +31,16 @@ using aidl::android::hardware::audio::common::getChannelCount;
 
 namespace aidl::android::hardware::audio::core {
 
-StreamAlsa::StreamAlsa(StreamContext* context, const Metadata& metadata, int readWriteRetries)
+StreamAlsa::StreamAlsa(StreamContext* context, const Metadata& metadata, int readWriteRetries,
+                       bool waitForOutputDevice)
     : StreamCommonImpl(context, metadata),
       mBufferSizeFrames(getContext().getBufferSizeInFrames()),
       mFrameSizeBytes(getContext().getFrameSize()),
       mSampleRate(getContext().getSampleRate()),
       mIsInput(isInput(metadata)),
       mConfig(alsa::getPcmConfig(getContext(), mIsInput)),
-      mReadWriteRetries(readWriteRetries) {}
+      mReadWriteRetries(readWriteRetries),
+      mWaitForOutputDevice(waitForOutputDevice) {}
 
 StreamAlsa::~StreamAlsa() {
     cleanupWorker();
@@ -177,10 +179,29 @@ StreamAlsa::~StreamAlsa() {
         maxLatency = proxy_get_latency(mAlsaDeviceProxies[i].get());
     } else {
         alsa::applyGain(buffer, mGain, bytesToTransfer, mConfig.value().format, mConfig->channels);
+        // The sink never blocks, so a full sink means the device is behind. A stream with no
+        // pacing of its own must wait for it here: the client is otherwise never slowed to the
+        // device's rate (AudioFlinger's fast mixer then runs at 1/0.95 of it), and what does
+        // not fit is dropped. The wait is bounded at four buffers, so that a stalled device
+        // cannot hold the worker thread.
+        // ponytail: polls every 1 ms, as 'outputIoThread' does, because MonoPipe cannot block
+        // on its reader; that is up to 1 ms of jitter per write. A ring buffer with a
+        // condition variable would remove it.
+        const int maxWaits = mWaitForOutputDevice
+                ? static_cast<int>(4 * mBufferSizeFrames * MILLIS_PER_SECOND / mSampleRate)
+                : 0;
         for (size_t i = 0; i < mAlsaDeviceProxies.size(); ++i) {
             LOG(VERBOSE) << __func__ << ": writing into sink " << i;
-            ssize_t framesWritten = mSinks[i]->write(buffer, frameCount);
-            LOG_IF(FATAL, framesWritten < 0) << "Error writing into the pipe: " << framesWritten;
+            ssize_t framesWritten = 0;
+            for (int waits = 0;; ++waits) {
+                const ssize_t written = mSinks[i]->write(
+                        static_cast<char*>(buffer) + framesWritten * mFrameSizeBytes,
+                        frameCount - framesWritten);
+                LOG_IF(FATAL, written < 0) << "Error writing into the pipe: " << written;
+                framesWritten += written;
+                if (framesWritten == static_cast<ssize_t>(frameCount) || waits >= maxWaits) break;
+                usleep(1000);
+            }
             if (ssize_t framesLost = static_cast<ssize_t>(frameCount) - framesWritten;
                 framesLost > 0) {
                 LOG(WARNING) << __func__ << ": sink " << i << " incomplete data sent, dropping "

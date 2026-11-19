@@ -36,7 +36,10 @@ namespace aidl::android::hardware::audio::core {
 // provide necessary overrides for all interface methods omitted here.
 class StreamAlsa : public StreamCommonImpl {
   public:
-    StreamAlsa(StreamContext* context, const Metadata& metadata, int readWriteRetries);
+    // 'waitForOutputDevice' is for an output stream that has no pacing of its own: 'transfer'
+    // then waits for the device to take the data, which is what slows the client to its rate.
+    StreamAlsa(StreamContext* context, const Metadata& metadata, int readWriteRetries,
+               bool waitForOutputDevice = false);
     ~StreamAlsa();
 
     // Methods of 'DriverInterface'.
@@ -62,6 +65,7 @@ class StreamAlsa : public StreamCommonImpl {
     const bool mIsInput;
     const std::optional<struct pcm_config> mConfig;
     const int mReadWriteRetries;
+    const bool mWaitForOutputDevice;
 
   private:
     ::android::NBAIO_Format getPipeFormat() const;
